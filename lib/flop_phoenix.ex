@@ -530,8 +530,7 @@ defmodule Flop.Phoenix do
           on_paginate={@on_paginate}
           {Pagination.attrs_for_page_link(@meta.total_pages, @meta, @opts)}
         >
-          co
-        @meta.total_pages %>
+        <%= @meta.total_pages %>
         </.pagination_link>
       </div>
     </div>
