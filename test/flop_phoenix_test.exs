@@ -3024,8 +3024,7 @@ defmodule Flop.PhoenixTest do
       assert [
                {"div", [{"data-test-id", "thead-label-component"}],
                 ["\n  Custom\n"]}
-             ] =
-               Floki.find(html, ~s([data-test-id="thead-label-component"]))
+             ] = Floki.find(html, ~s([data-test-id="thead-label-component"]))
     end
 
     test "renders multiple inputs for the same field", %{
