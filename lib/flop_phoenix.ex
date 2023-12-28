@@ -440,6 +440,14 @@ defmodule Flop.Phoenix do
       >
         <%= @opts[:previous_link_content] %>
       </.pagination_link>
+      <.page_links
+        event={@event}
+        meta={@meta}
+        on_paginate={@on_paginate}
+        page_link_helper={@page_link_helper}
+        opts={@opts}
+        target={@target}
+      />
       <.pagination_link
         disabled={!@meta.has_next_page?}
         disabled_class={@opts[:disabled_class]}
@@ -452,14 +460,6 @@ defmodule Flop.Phoenix do
       >
         <%= @opts[:next_link_content] %>
       </.pagination_link>
-      <.page_links
-        event={@event}
-        meta={@meta}
-        on_paginate={@on_paginate}
-        page_link_helper={@page_link_helper}
-        opts={@opts}
-        target={@target}
-      />
     </nav>
     """
   end
@@ -486,8 +486,8 @@ defmodule Flop.Phoenix do
     assigns = assign(assigns, first: first, last: last, range: range)
 
     ~H"""
-    <ul :if={@opts[:page_links] != :hide} {@opts[:pagination_list_attrs]}>
-      <li :if={@first > 1}>
+    <div :if={@opts[:page_links] != :hide} {@opts[:pagination_list_attrs]}>
+      <div :if={@first > 1}>
         <.pagination_link
           event={@event}
           target={@target}
@@ -498,13 +498,13 @@ defmodule Flop.Phoenix do
         >
           1
         </.pagination_link>
-      </li>
+      </div>
 
-      <li :if={@first > 2}>
+      <div :if={@first > 2}>
         <span {@opts[:ellipsis_attrs]}><%= @opts[:ellipsis_content] %></span>
-      </li>
+      </div>
 
-      <li :for={page <- @range}>
+      <div :for={page <- @range}>
         <.pagination_link
           event={@event}
           target={@target}
@@ -515,13 +515,13 @@ defmodule Flop.Phoenix do
         >
           <%= page %>
         </.pagination_link>
-      </li>
+      </div>
 
-      <li :if={@last < @meta.total_pages - 1}>
+      <div :if={@last < @meta.total_pages - 1}>
         <span {@opts[:ellipsis_attrs]}><%= @opts[:ellipsis_content] %></span>
-      </li>
+      </div>
 
-      <li :if={@last < @meta.total_pages}>
+      <div :if={@last < @meta.total_pages}>
         <.pagination_link
           event={@event}
           target={@target}
@@ -530,10 +530,11 @@ defmodule Flop.Phoenix do
           on_paginate={@on_paginate}
           {Pagination.attrs_for_page_link(@meta.total_pages, @meta, @opts)}
         >
-          <%= @meta.total_pages %>
+          co
+        @meta.total_pages %>
         </.pagination_link>
-      </li>
-    </ul>
+      </div>
+    </div>
     """
   end
 
