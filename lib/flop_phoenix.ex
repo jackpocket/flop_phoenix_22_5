@@ -487,52 +487,48 @@ defmodule Flop.Phoenix do
 
     ~H"""
     <div :if={@opts[:page_links] != :hide} {@opts[:pagination_list_attrs]}>
-      <div :if={@first > 1}>
-        <.pagination_link
-          event={@event}
-          target={@target}
-          page={1}
-          path={@page_link_helper.(1)}
-          on_paginate={@on_paginate}
-          {Pagination.attrs_for_page_link(1, @meta, @opts)}
-        >
-          1
-        </.pagination_link>
-      </div>
+      <.pagination_link
+        :if={@first > 1}
+        event={@event}
+        target={@target}
+        page={1}
+        path={@page_link_helper.(1)}
+        on_paginate={@on_paginate}
+        {Pagination.attrs_for_page_link(1, @meta, @opts)}
+      >
+        1
+      </.pagination_link>
+      <span :if={@first > 2} {@opts[:ellipsis_attrs]}>
+        <%= @opts[:ellipsis_content] %>
+      </span>
 
-      <div :if={@first > 2}>
-        <span {@opts[:ellipsis_attrs]}><%= @opts[:ellipsis_content] %></span>
-      </div>
+      <.pagination_link
+        :for={page <- @range}
+        event={@event}
+        target={@target}
+        page={page}
+        path={@page_link_helper.(page)}
+        on_paginate={@on_paginate}
+        {Pagination.attrs_for_page_link(page, @meta, @opts)}
+      >
+        <%= page %>
+      </.pagination_link>
 
-      <div :for={page <- @range}>
-        <.pagination_link
-          event={@event}
-          target={@target}
-          page={page}
-          path={@page_link_helper.(page)}
-          on_paginate={@on_paginate}
-          {Pagination.attrs_for_page_link(page, @meta, @opts)}
-        >
-          <%= page %>
-        </.pagination_link>
-      </div>
+      <span :if={@last < @meta.total_pages - 1} {@opts[:ellipsis_attrs]}>
+        <%= @opts[:ellipsis_content] %>
+      </span>
 
-      <div :if={@last < @meta.total_pages - 1}>
-        <span {@opts[:ellipsis_attrs]}><%= @opts[:ellipsis_content] %></span>
-      </div>
-
-      <div :if={@last < @meta.total_pages}>
-        <.pagination_link
-          event={@event}
-          target={@target}
-          page={@meta.total_pages}
-          path={@page_link_helper.(@meta.total_pages)}
-          on_paginate={@on_paginate}
-          {Pagination.attrs_for_page_link(@meta.total_pages, @meta, @opts)}
-        >
-          <%= @meta.total_pages %>
-        </.pagination_link>
-      </div>
+      <.pagination_link
+        :if={@last < @meta.total_pages}
+        event={@event}
+        target={@target}
+        page={@meta.total_pages}
+        path={@page_link_helper.(@meta.total_pages)}
+        on_paginate={@on_paginate}
+        {Pagination.attrs_for_page_link(@meta.total_pages, @meta, @opts)}
+      >
+        <%= @meta.total_pages %>
+      </.pagination_link>
     </div>
     """
   end
